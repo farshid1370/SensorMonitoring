@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SensorMonitoring.Migrations
 {
-    public partial class initialSqlLite : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,7 +11,7 @@ namespace SensorMonitoring.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
@@ -20,26 +20,26 @@ namespace SensorMonitoring.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.ID);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "labs",
+                name: "Labs",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: false),
-                    UserID = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_labs", x => x.ID);
+                    table.PrimaryKey("PK_Labs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_labs_Users_UserID",
-                        column: x => x.UserID,
+                        name: "FK_Labs_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -47,21 +47,21 @@ namespace SensorMonitoring.Migrations
                 name: "Sensors",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     IndicatorCode = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: false),
                     SubTitle = table.Column<string>(nullable: false),
-                    LabID = table.Column<int>(nullable: false)
+                    LabId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sensors", x => x.ID);
+                    table.PrimaryKey("PK_Sensors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Sensors_labs_LabID",
-                        column: x => x.LabID,
-                        principalTable: "labs",
-                        principalColumn: "ID",
+                        name: "FK_Sensors_Labs_LabId",
+                        column: x => x.LabId,
+                        principalTable: "Labs",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -69,38 +69,38 @@ namespace SensorMonitoring.Migrations
                 name: "SensorDatas",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Value = table.Column<string>(nullable: false),
                     Time = table.Column<DateTime>(nullable: false),
                     Priorty = table.Column<int>(nullable: false),
-                    SensorID = table.Column<int>(nullable: false)
+                    SensorId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SensorDatas", x => x.ID);
+                    table.PrimaryKey("PK_SensorDatas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SensorDatas_Sensors_SensorID",
-                        column: x => x.SensorID,
+                        name: "FK_SensorDatas_Sensors_SensorId",
+                        column: x => x.SensorId,
                         principalTable: "Sensors",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_labs_UserID",
-                table: "labs",
-                column: "UserID");
+                name: "IX_Labs_UserId",
+                table: "Labs",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SensorDatas_SensorID",
+                name: "IX_SensorDatas_SensorId",
                 table: "SensorDatas",
-                column: "SensorID");
+                column: "SensorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sensors_LabID",
+                name: "IX_Sensors_LabId",
                 table: "Sensors",
-                column: "LabID");
+                column: "LabId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -112,7 +112,7 @@ namespace SensorMonitoring.Migrations
                 name: "Sensors");
 
             migrationBuilder.DropTable(
-                name: "labs");
+                name: "Labs");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -9,8 +9,8 @@ using SensorMonitoring.Model;
 namespace SensorMonitoring.Migrations
 {
     [DbContext(typeof(SensorMonitoringContext))]
-    [Migration("20180702054502_initialSqlLite")]
-    partial class initialSqlLite
+    [Migration("20180702122521_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,29 +20,29 @@ namespace SensorMonitoring.Migrations
 
             modelBuilder.Entity("SensorMonitoring.Model.Lab", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<int>("UserID");
+                    b.Property<int>("UserId");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("labs");
+                    b.ToTable("Labs");
                 });
 
             modelBuilder.Entity("SensorMonitoring.Model.Sensor", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("IndicatorCode");
 
-                    b.Property<int>("LabID");
+                    b.Property<int>("LabId");
 
                     b.Property<string>("SubTitle")
                         .IsRequired();
@@ -50,37 +50,37 @@ namespace SensorMonitoring.Migrations
                     b.Property<string>("Title")
                         .IsRequired();
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("LabID");
+                    b.HasIndex("LabId");
 
                     b.ToTable("Sensors");
                 });
 
             modelBuilder.Entity("SensorMonitoring.Model.SensorData", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Priorty");
 
-                    b.Property<int>("SensorID");
+                    b.Property<int>("SensorId");
 
                     b.Property<DateTime>("Time");
 
                     b.Property<string>("Value")
                         .IsRequired();
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("SensorID");
+                    b.HasIndex("SensorId");
 
                     b.ToTable("SensorDatas");
                 });
 
             modelBuilder.Entity("SensorMonitoring.Model.User", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("FirstName")
@@ -95,7 +95,7 @@ namespace SensorMonitoring.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired();
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
@@ -104,7 +104,7 @@ namespace SensorMonitoring.Migrations
                 {
                     b.HasOne("SensorMonitoring.Model.User")
                         .WithMany("Labs")
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -112,7 +112,7 @@ namespace SensorMonitoring.Migrations
                 {
                     b.HasOne("SensorMonitoring.Model.Lab")
                         .WithMany("Sensors")
-                        .HasForeignKey("LabID")
+                        .HasForeignKey("LabId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -120,7 +120,7 @@ namespace SensorMonitoring.Migrations
                 {
                     b.HasOne("SensorMonitoring.Model.Sensor")
                         .WithMany("SensorDatas")
-                        .HasForeignKey("SensorID")
+                        .HasForeignKey("SensorId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

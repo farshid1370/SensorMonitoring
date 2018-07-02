@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SensorMonitoring.Model
 {
     public class SensorData
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         [Required]
 
         public string Value { get; set; }
@@ -19,6 +16,6 @@ namespace SensorMonitoring.Model
         [Required]
         public int Priorty { get; set; }
         [ForeignKey("Sensor")]
-        public int SensorID { get; set; }
+        public int SensorId { get; set; }
     }
 }

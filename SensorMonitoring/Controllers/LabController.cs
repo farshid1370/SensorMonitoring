@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SensorMonitoring.Model;
@@ -12,49 +9,56 @@ namespace SensorMonitoring.Controllers
     [Route("api/[controller]")]
     public class LabController : ControllerBase
     {
-        public SensorMonitoringContext Context { get; set; }
-        public LabController(SensorMonitoringContext _Context)
+        private SensorMonitoringContext Context { get; }
+        public LabController(SensorMonitoringContext context)
         {
-            this.Context = _Context;
+            Context = context;
         }
         [HttpPost]
         public ActionResult<ResultViewModel> Create(Lab lab)
         {
             try
             {
-                Context.labs.Add(lab);
+                Context.Labs.Add(lab);
                 Context.SaveChanges();
-                ResultViewModel result = new ResultViewModel();
-                result.Validate = true;
-                result.ValidateMessage = "با موفقیت ثبت شد";
-                result.Message = JsonConvert.SerializeObject(Context.labs.Where(p=>p.ID==lab.ID).Select(p=>new{p.ID,p.Name}));
-                result.ExeptionMessage = "";
+                ResultViewModel result = new ResultViewModel
+                {
+                    Validate = true,
+                    ValidateMessage = "با موفقیت ثبت شد",
+                    Message = JsonConvert.SerializeObject(Context.Labs.Where(p => p.Id == lab.Id)
+                        .Select(p => new {ID = p.Id, p.Name})),
+                    ExeptionMessage = ""
+                };
 
                 return new OkObjectResult(result);
             }
             catch (Exception ex)
             {
-                ResultViewModel result = new ResultViewModel();
-                result.Validate = false;
-                result.ValidateMessage = "عملیات با خطا مواجه شد";
-                result.Message = "";
-                result.ExeptionMessage = ex.Message;
+                ResultViewModel result = new ResultViewModel
+                {
+                    Validate = false,
+                    ValidateMessage = "عملیات با خطا مواجه شد",
+                    Message = "",
+                    ExeptionMessage = ex.Message
+                };
                 return new BadRequestObjectResult(result);
             }
 
         }
-        [HttpGet("{UserID}")]
-        public ActionResult<ResultViewModel> Get(int UserID)
+        [HttpGet("{userID}")]
+        public ActionResult<ResultViewModel> Get(int userId)
         {
             try
             {
-                var _labs = Context.labs.Where(p => p.UserID == UserID).Select(p => new { p.ID, p.Name }).ToList();
-                ResultViewModel result = new ResultViewModel();
-                result.Validate = true;
-                result.ValidateMessage = "";
-                result.Message = JsonConvert.SerializeObject(_labs);
-                result.ExeptionMessage = "";
-                if (_labs.Count == 0)
+                var labs = Context.Labs.Where(p => p.UserId == userId).Select(p => new { ID = p.Id, p.Name }).ToList();
+                ResultViewModel result = new ResultViewModel
+                {
+                    Validate = true,
+                    ValidateMessage = "",
+                    Message = JsonConvert.SerializeObject(labs),
+                    ExeptionMessage = ""
+                };
+                if (labs.Count == 0)
                 {
                     result.ValidateMessage = "اطلاعاتی جهت نمایش وجود ندارد";
                 }
@@ -62,11 +66,13 @@ namespace SensorMonitoring.Controllers
             }
             catch (Exception ex)
             {
-                ResultViewModel result = new ResultViewModel();
-                result.Validate = false;
-                result.ValidateMessage = "عملیات با خطا مواجه شد";
-                result.Message = "";
-                result.ExeptionMessage = ex.Message;
+                ResultViewModel result = new ResultViewModel
+                {
+                    Validate = false,
+                    ValidateMessage = "عملیات با خطا مواجه شد",
+                    Message = "",
+                    ExeptionMessage = ex.Message
+                };
                 return new BadRequestObjectResult(result);
             }
 

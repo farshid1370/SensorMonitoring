@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SensorMonitoring.Model;
@@ -13,10 +10,10 @@ namespace SensorMonitoring.Controllers
     [Route("api/[controller]")]
     public class RegisterController : ControllerBase
     {
-        public SensorMonitoringContext Context { get; set; }
-        public RegisterController(SensorMonitoringContext _Context)
+        private SensorMonitoringContext Context { get; }
+        public RegisterController(SensorMonitoringContext context)
         {
-            this.Context = _Context;
+            Context = context;
         }
         [HttpPost]
         public ActionResult<ResultViewModel> Register(User user)
@@ -38,18 +35,20 @@ namespace SensorMonitoring.Controllers
                     Context.SaveChanges();
                     result.Validate = true;
                     result.ValidateMessage = "با موفقیت ثبت شد";
-                    result.Message = JsonConvert.SerializeObject(Context.Users.Where(p => p.ID == user.ID).Select(p => new { p.ID, p.FirstName, p.LastName, p.PhoneNumber }));
+                    result.Message = JsonConvert.SerializeObject(Context.Users.Where(p => p.Id == user.Id).Select(p => new { ID = p.Id, p.FirstName, p.LastName, p.PhoneNumber }));
                     result.ExeptionMessage = "";
                 }
                 return new OkObjectResult(result);
             }
             catch (Exception ex)
             {
-                ResultViewModel result = new ResultViewModel();
-                result.Validate = false;
-                result.ValidateMessage = "عملیات با خطا مواجه شد";
-                result.Message = "";
-                result.ExeptionMessage = ex.Message;
+                ResultViewModel result = new ResultViewModel
+                {
+                    Validate = false,
+                    ValidateMessage = "عملیات با خطا مواجه شد",
+                    Message = "",
+                    ExeptionMessage = ex.Message
+                };
                 return new BadRequestObjectResult(result);
             }
         }

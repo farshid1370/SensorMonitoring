@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SensorMonitoring.Model;
@@ -12,17 +9,17 @@ namespace SensorMonitoring.Controllers
     [Route("api/[controller]")]
     public class LogInController : ControllerBase
     {
-        public SensorMonitoringContext Context { get; set; }
-        public LogInController(SensorMonitoringContext _Context)
+        private SensorMonitoringContext Context { get; }
+        public LogInController(SensorMonitoringContext context)
         {
-            this.Context = _Context;
+            Context = context;
         }
         [HttpPost]
-        public ActionResult<ResultViewModel> LogIn(string PhoneNumber, string Password)
+        public ActionResult<ResultViewModel> LogIn(string phoneNumber, string password)
         {
             try
             {
-                User user = Context.Users.SingleOrDefault(p => p.PhoneNumber == PhoneNumber && p.Password == Password);
+                User user = Context.Users.SingleOrDefault(p => p.PhoneNumber == phoneNumber && p.Password == password);
                 ResultViewModel result = new ResultViewModel();
                 if (user == null)
                 {
@@ -35,18 +32,20 @@ namespace SensorMonitoring.Controllers
                 {
                     result.Validate = true;
                     result.ValidateMessage = "با موفقیت وارد شدید";
-                    result.Message = JsonConvert.SerializeObject(Context.Users.Where(p=>p.ID==user.ID).Select(p=>new{p.ID,p.FirstName,p.LastName,p.PhoneNumber}));
+                    result.Message = JsonConvert.SerializeObject(Context.Users.Where(p=>p.Id==user.Id).Select(p=>new{ID = p.Id,p.FirstName,p.LastName,p.PhoneNumber}));
                     result.ExeptionMessage = "";
                 }
                 return new OkObjectResult(result);
             }
             catch (Exception ex)
             {
-                ResultViewModel result = new ResultViewModel();
-                result.Validate = false;
-                result.ValidateMessage = "عملیات با خطا مواجه شد";
-                result.Message = "";
-                result.ExeptionMessage = ex.Message;
+                ResultViewModel result = new ResultViewModel
+                {
+                    Validate = false,
+                    ValidateMessage = "عملیات با خطا مواجه شد",
+                    Message = "",
+                    ExeptionMessage = ex.Message
+                };
                 return new BadRequestObjectResult(result);
             }
 
