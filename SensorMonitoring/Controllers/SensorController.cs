@@ -26,7 +26,7 @@ namespace SensorMonitoring.Controllers
                     Validate = true,
                     ValidateMessage = "با موفقیت ثبت شد",
                     Message = JsonConvert.SerializeObject(Context.Sensors.Where(p => p.Id == sensor.Id)
-                        .Select(p => new {ID = p.Id, p.IndicatorCode, p.Title, p.SubTitle})),
+                        .Select(p => new {ID = p.Id, p.IndicatorCode, p.Title, p.SubTitle}).SingleOrDefault()),
                     ExeptionMessage = ""
                 };
 
