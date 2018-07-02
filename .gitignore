@@ -328,3 +328,15 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+#Ignore bin folder
+SensorMonitoring/bin/
+
+#Ignore obj folder
+SensorMonitoring/obj/
+
+#Ignore SQLite DB
+SensorMonitoring/SensorMonitoring.db
+
+#Ignore files
+SensorMonitoring/SensorMonitoring.csproj.user
