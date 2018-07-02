@@ -36,14 +36,9 @@ namespace SensorMonitoring.Controllers
                 {
                     Context.Users.Add(user);
                     Context.SaveChanges();
-                    User _user = new User();
-                    _user.ID = user.ID;
-                    _user.FirstName = user.FirstName;
-                    _user.LastName = user.LastName;
-                    _user.PhoneNumber = user.PhoneNumber;
                     result.Validate = true;
                     result.ValidateMessage = "با موفقیت ثبت شد";
-                    result.Message = JsonConvert.SerializeObject(_user);
+                    result.Message = JsonConvert.SerializeObject(Context.Users.Where(p => p.ID == user.ID).Select(p => new { p.ID, p.FirstName, p.LastName, p.PhoneNumber }));
                     result.ExeptionMessage = "";
                 }
                 return new OkObjectResult(result);

@@ -24,15 +24,10 @@ namespace SensorMonitoring.Controllers
             {
                 Context.Sensors.Add(sensor);
                 Context.SaveChanges();
-                Sensor _sensor = new Sensor();
-                _sensor.ID = sensor.ID;
-                _sensor.IndicatorCode = sensor.IndicatorCode;
-                _sensor.Title = sensor.Title;
-                _sensor.SubTitle = sensor.SubTitle;
                 ResultViewModel result = new ResultViewModel();
                 result.Validate = true;
                 result.ValidateMessage = "با موفقیت ثبت شد";
-                result.Message = JsonConvert.SerializeObject(_sensor);
+                result.Message = JsonConvert.SerializeObject(Context.Sensors.Where(p=>p.ID==sensor.ID).Select(p=>new{p.ID,p.IndicatorCode,p.Title,p.SubTitle}));
                 result.ExeptionMessage = "";
 
                 return new OkObjectResult(result);

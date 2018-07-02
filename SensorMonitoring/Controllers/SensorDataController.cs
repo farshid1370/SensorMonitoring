@@ -30,15 +30,10 @@ namespace SensorMonitoring.Controllers
                 sensorData.Time = DateTime.Now;
                 Context.SensorDatas.Add(sensorData);
                 Context.SaveChanges();
-                SensorData _sensorData = new SensorData();
-                _sensorData.ID = sensorData.ID;
-                _sensorData.Priorty = sensorData.Priorty;
-                _sensorData.Time = sensorData.Time;
-                _sensorData.Value = sensorData.Value;
                 ResultViewModel result = new ResultViewModel();
                 result.Validate = true;
                 result.ValidateMessage = "با موفقیت ثبت شد";
-                result.Message = JsonConvert.SerializeObject(_sensorData);
+                result.Message = JsonConvert.SerializeObject(Context.SensorDatas.Where(p=>p.ID==sensorData.ID).Select(p=>new{p.ID,p.Priorty,p.Time,p.Value}));
                 result.ExeptionMessage = "";
 
                 return new OkObjectResult(result);

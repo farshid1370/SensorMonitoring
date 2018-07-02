@@ -24,13 +24,10 @@ namespace SensorMonitoring.Controllers
             {
                 Context.labs.Add(lab);
                 Context.SaveChanges();
-                Lab _Lab = new Lab();
-                _Lab.ID = lab.ID;
-                _Lab.Name = lab.Name;
                 ResultViewModel result = new ResultViewModel();
                 result.Validate = true;
                 result.ValidateMessage = "با موفقیت ثبت شد";
-                result.Message = JsonConvert.SerializeObject(_Lab);
+                result.Message = JsonConvert.SerializeObject(Context.labs.Where(p=>p.ID==lab.ID).Select(p=>new{p.ID,p.Name}));
                 result.ExeptionMessage = "";
 
                 return new OkObjectResult(result);
