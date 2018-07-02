@@ -61,7 +61,7 @@ namespace SensorMonitoring.Controllers
                 result.ExeptionMessage = "";
                 if (_sensors.Count == 0)
                 {
-                    result.ValidateMessage = "اطلاعاتی جهت نمایش وجود ندارد"; f
+                    result.ValidateMessage = "اطلاعاتی جهت نمایش وجود ندارد";
                 }
                 return new OkObjectResult(result);
             }
