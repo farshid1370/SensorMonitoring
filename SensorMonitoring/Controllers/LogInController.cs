@@ -9,6 +9,7 @@ using SensorMonitoring.Model;
 
 namespace SensorMonitoring.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class LogInController : ControllerBase
     {
