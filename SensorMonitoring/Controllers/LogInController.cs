@@ -14,6 +14,12 @@ namespace SensorMonitoring.Controllers
         {
             Context = context;
         }
+        /// <summary>
+        /// Login to app
+        /// </summary>
+        /// <param name="phoneNumber">Phone number of user</param>
+        /// <param name="password">Password of user</param>
+        /// <returns>ResultModel</returns>
         [HttpPost]
         public ActionResult<ResultViewModel> LogIn(string phoneNumber, string password)
         {

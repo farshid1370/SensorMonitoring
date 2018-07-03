@@ -15,6 +15,11 @@ namespace SensorMonitoring.Controllers
         {
             Context = context;
         }
+        /// <summary>
+        /// Register new user
+        /// </summary>
+        /// <param name="user">The object of User</param>
+        /// <returns>ResultModel</returns>
         [HttpPost]
         public ActionResult<ResultViewModel> Register(User user)
         {

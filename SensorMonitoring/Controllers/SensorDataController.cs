@@ -14,7 +14,13 @@ namespace SensorMonitoring.Controllers
         {
             Context = context;
         }
-      
+        /// <summary>
+        /// Create new data for sensor
+        /// </summary>
+        /// <param name="priorty">Priorty of data</param>
+        /// <param name="value">Value of data</param>
+        /// <param name="sensorId">Id of Sensor</param>
+        /// <returns>ResultModel</returns>
         [HttpGet]
         public ActionResult<ResultViewModel> Create(int priorty , string value , int sensorId)
         {
@@ -53,6 +59,14 @@ namespace SensorMonitoring.Controllers
             }
 
         }
+        /// <summary>
+        /// Get Data of sensor
+        /// </summary>
+        /// <param name="sensorId">Id of sensor</param>
+        /// <param name="number">Number of results to return</param>
+        /// <param name="startDate">Start date of results to return</param>
+        /// <param name="endDate">End date of results to return</param>
+        /// <returns>ResultModel</returns>
         [HttpPost]
         public ActionResult<ResultViewModel> Get(int sensorId, int number, DateTime startDate, DateTime endDate)
         {

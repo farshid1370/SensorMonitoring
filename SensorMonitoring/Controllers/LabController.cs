@@ -14,6 +14,11 @@ namespace SensorMonitoring.Controllers
         {
             Context = context;
         }
+        /// <summary>
+        /// Create lab
+        /// </summary>
+        /// <param name="lab">The object of Lab</param>
+        /// <returns>ResultModel</returns>
         [HttpPost]
         public ActionResult<ResultViewModel> Create(Lab lab)
         {
@@ -45,6 +50,11 @@ namespace SensorMonitoring.Controllers
             }
 
         }
+        /// <summary>
+        /// Get labs of user
+        /// </summary>
+        /// <param name="userId">Id of user</param>
+        /// <returns>ResultModel</returns>
         [HttpGet("{userID}")]
         public ActionResult<ResultViewModel> Get(int userId)
         {
