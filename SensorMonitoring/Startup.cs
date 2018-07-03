@@ -40,9 +40,7 @@ namespace SensorMonitoring
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
+            app.UseCors(p => p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseMvcWithDefaultRoute();
         }
     }
