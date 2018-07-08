@@ -22,7 +22,7 @@ namespace SensorMonitoring.Controllers
         /// <param name="sensorId">Id of Sensor</param>
         /// <returns>ResultModel</returns>
         [HttpGet]
-        public ActionResult<ResultViewModel> Create(int priorty , string value , int sensorId)
+        public ActionResult<ResultViewModel> Create(int priorty, string value, int sensorId)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace SensorMonitoring.Controllers
                     Validate = true,
                     ValidateMessage = "با موفقیت ثبت شد",
                     Message = JsonConvert.SerializeObject(Context.SensorDatas.Where(p => p.Id == sensorData.Id)
-                        .Select(p => new {ID = p.Id, p.Priorty, p.Time, p.Value}).SingleOrDefault()),
+                        .Select(p => new { ID = p.Id, p.Priorty, p.Time, p.Value }).SingleOrDefault()),
                     ExeptionMessage = ""
                 };
 
@@ -72,20 +72,43 @@ namespace SensorMonitoring.Controllers
         {
             try
             {
-                var sensorsData = Context.SensorDatas.Where(p => p.SensorId == sensorId && p.Time >= startDate && p.Time <= endDate)
-                    .Select(p => new { ID = p.Id, p.Priorty, p.Time, p.Value }).OrderByDescending(p=>p.ID).Take(number).ToList();
-                ResultViewModel result = new ResultViewModel
+
+                if (number == 0)
                 {
-                    Validate = true,
-                    ValidateMessage = "",
-                    Message = JsonConvert.SerializeObject(sensorsData),
-                    ExeptionMessage = ""
-                };
-                if (sensorsData.Count == 0)
-                {
-                    result.ValidateMessage = "اطلاعاتی جهت نمایش وجود ندارد";
+                    var sensorsData = Context.SensorDatas.Where(p => p.SensorId == sensorId && ((p.Time >= startDate && p.Time <= endDate) || startDate.ToString("yyyy-MM-dd HH:mm:ss") == "0001-01-01 00:00:00"))
+                        .Select(p => new { ID = p.Id, p.Priorty, p.Time, p.Value }).OrderByDescending(p => p.ID).ToList();
+                    ResultViewModel result = new ResultViewModel
+                    {
+                        Validate = true,
+                        ValidateMessage = "",
+                        Message = JsonConvert.SerializeObject(sensorsData),
+                        ExeptionMessage = ""
+                    };
+                    if (sensorsData.Count == 0)
+                    {
+                        result.ValidateMessage = "اطلاعاتی جهت نمایش وجود ندارد";
+                    }
+                    return new OkObjectResult(result);
                 }
-                return new OkObjectResult(result);
+                else
+                {
+                    var sensorsData = Context.SensorDatas.Where(p => p.SensorId == sensorId && ((p.Time >= startDate && p.Time <= endDate) || startDate.ToString("yyyy-MM-dd HH:mm:ss") == "0001-01-01 00:00:00"))
+                        .Select(p => new { ID = p.Id, p.Priorty, p.Time, p.Value }).OrderByDescending(p => p.ID).Take(number).ToList();
+                    ResultViewModel result = new ResultViewModel
+                    {
+                        Validate = true,
+                        ValidateMessage = "",
+                        Message = JsonConvert.SerializeObject(sensorsData),
+                        ExeptionMessage = ""
+                    };
+                    if (sensorsData.Count == 0)
+                    {
+                        result.ValidateMessage = "اطلاعاتی جهت نمایش وجود ندارد";
+                    }
+                    return new OkObjectResult(result);
+                }
+
+
             }
             catch (Exception ex)
             {
